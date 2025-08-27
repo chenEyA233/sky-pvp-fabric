@@ -1,0 +1,49 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+tasks.register('runClient', JavaExec) {
+    group = 'Tasks'
+    description = 'Runs the client application'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'cn.cheneya.Start'
+}
+
+application {
+    mainClass = 'cn.cheneya.Start'
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'cn.cheneya.Start'
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+group = 'net.skypvpteam.server'
+version = '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.sun.net.httpserver:http:20070405'
+    testImplementation 'junit:junit:4.13.2'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java']
+        }
+        resources {
+            srcDirs = ['src/main/resources']
+        }
+    }
+}
